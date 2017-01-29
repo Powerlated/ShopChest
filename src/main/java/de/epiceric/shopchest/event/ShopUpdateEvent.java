@@ -5,37 +5,31 @@ import org.bukkit.event.HandlerList;
 
 public class ShopUpdateEvent extends Event {
 
-    public enum UpdateQuality {
-        SLOWEST(31L),
-        SLOWER(24L),
-        SLOW(17L),
-        NORMAL(10L),
-        FAST(7L),
-        FASTER(4L),
-        FASTEST(1L);
+	public enum UpdateQuality {
+		SLOWEST(31L), SLOWER(24L), SLOW(17L), NORMAL(10L), FAST(7L), FASTER(4L), FASTEST(1L);
 
-        private long time;
+		private long time;
 
-        UpdateQuality(long time) {
-            this.time = time;
-        }
+		UpdateQuality(long time) {
+			this.time = time;
+		}
 
-        public long getTime() {
-            return time;
-        }
-    }
+		public long getTime() {
+			return time;
+		}
+	}
 
-    private static final HandlerList handlers = new HandlerList();
+	private static final HandlerList handlers = new HandlerList();
 
-    public ShopUpdateEvent() {
-    }
+	public ShopUpdateEvent() {
+	}
 
-    @Override
-    public HandlerList getHandlers() {
-        return handlers;
-    }
+	@Override
+	public HandlerList getHandlers() {
+		return handlers;
+	}
 
-    public static HandlerList getHandlerList() {
-        return handlers;
-    }
+	public static HandlerList getHandlerList() {
+		return handlers;
+	}
 }

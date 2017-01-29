@@ -19,256 +19,287 @@ import de.epiceric.shopchest.shop.Shop;
 
 public class ShopUtils {
 
-    private HashMap<Location, Shop> shopLocation = new HashMap<>();
-    private ShopChest plugin;
+	private HashMap<Location, Shop> shopLocation = new HashMap<>();
+	private ShopChest plugin;
 
-    public ShopUtils(ShopChest plugin) {
-        this.plugin = plugin;
-    }
+	public ShopUtils(ShopChest plugin) {
+		this.plugin = plugin;
+	}
 
-    /**
-     * Get the shop at a given location
-     *
-     * @param location Location of the shop
-     * @return Shop at the given location or <b>null</b> if no shop is found there
-     */
-    public Shop getShop(Location location) {
-        Location newLocation = new Location(location.getWorld(), location.getX(), location.getY(), location.getZ());
+	/**
+	 * Get the shop at a given location
+	 *
+	 * @param location
+	 *            Location of the shop
+	 * @return Shop at the given location or <b>null</b> if no shop is found
+	 *         there
+	 */
+	public Shop getShop(Location location) {
+		Location newLocation = new Location(location.getWorld(), location.getX(), location.getY(), location.getZ());
 
-        return shopLocation.get(newLocation);
-    }
+		return shopLocation.get(newLocation);
+	}
 
-    /**
-     * Checks whether there is a shop at a given location
-     * @param location Location to check
-     * @return Whether there is a shop at the given location
-     */
-    public boolean isShop(Location location) {
-        Location newLocation = new Location(location.getWorld(), location.getX(), location.getY(), location.getZ());
-        return shopLocation.containsKey(newLocation);
-    }
+	/**
+	 * Checks whether there is a shop at a given location
+	 * 
+	 * @param location
+	 *            Location to check
+	 * @return Whether there is a shop at the given location
+	 */
+	public boolean isShop(Location location) {
+		Location newLocation = new Location(location.getWorld(), location.getX(), location.getY(), location.getZ());
+		return shopLocation.containsKey(newLocation);
+	}
 
-    /**
-     * Get all Shops
-     * @return Array of all Shops
-     */
-    public Shop[] getShops() {
-        Collection<Shop> shops = shopLocation.values();
-        return shops.toArray(new Shop[shops.size()]);
-    }
+	/**
+	 * Get all Shops
+	 * 
+	 * @return Array of all Shops
+	 */
+	public Shop[] getShops() {
+		Collection<Shop> shops = shopLocation.values();
+		return shops.toArray(new Shop[shops.size()]);
+	}
 
-    /**
-     * Add a shop
-     * @param shop Shop to add
-     * @param addToDatabase Whether the shop should also be added to the database
-     */
-    public void addShop(Shop shop, boolean addToDatabase) {
-        InventoryHolder ih = shop.getInventoryHolder();
-        plugin.debug("Adding shop... (#" + shop.getID() + ")");
+	/**
+	 * Add a shop
+	 * 
+	 * @param shop
+	 *            Shop to add
+	 * @param addToDatabase
+	 *            Whether the shop should also be added to the database
+	 */
+	public void addShop(Shop shop, boolean addToDatabase) {
+		InventoryHolder ih = shop.getInventoryHolder();
+		plugin.debug("Adding shop... (#" + shop.getID() + ")");
 
-        if (ih instanceof DoubleChest) {
-            DoubleChest dc = (DoubleChest) ih;
-            Chest r = (Chest) dc.getRightSide();
-            Chest l = (Chest) dc.getLeftSide();
+		if (ih instanceof DoubleChest) {
+			DoubleChest dc = (DoubleChest) ih;
+			Chest r = (Chest) dc.getRightSide();
+			Chest l = (Chest) dc.getLeftSide();
 
-            plugin.debug("Added shop as double chest. (#" + shop.getID() + ")");
+			plugin.debug("Added shop as double chest. (#" + shop.getID() + ")");
 
-            shopLocation.put(r.getLocation(), shop);
-            shopLocation.put(l.getLocation(), shop);
-        } else {
-            plugin.debug("Added shop as single chest. (#" + shop.getID() + ")");
+			shopLocation.put(r.getLocation(), shop);
+			shopLocation.put(l.getLocation(), shop);
+		} else {
+			plugin.debug("Added shop as single chest. (#" + shop.getID() + ")");
 
-            shopLocation.put(shop.getLocation(), shop);
-        }
+			shopLocation.put(shop.getLocation(), shop);
+		}
 
-        if (addToDatabase)
-            plugin.getShopDatabase().addShop(shop);
+		if (addToDatabase)
+			plugin.getShopDatabase().addShop(shop);
 
-    }
+	}
 
-    /**
-     * Remove a shop
-     * @param shop Shop to remove
-     * @param removeFromDatabase Whether the shop should also be removed from the database
-     */
-    public void removeShop(Shop shop, boolean removeFromDatabase) {
-        plugin.debug("Removing shop (#" + shop.getID() + ")");
+	/**
+	 * Remove a shop
+	 * 
+	 * @param shop
+	 *            Shop to remove
+	 * @param removeFromDatabase
+	 *            Whether the shop should also be removed from the database
+	 */
+	public void removeShop(Shop shop, boolean removeFromDatabase) {
+		plugin.debug("Removing shop (#" + shop.getID() + ")");
 
-        InventoryHolder ih = shop.getInventoryHolder();
+		InventoryHolder ih = shop.getInventoryHolder();
 
-        if (ih instanceof DoubleChest) {
-            DoubleChest dc = (DoubleChest) ih;
-            Chest r = (Chest) dc.getRightSide();
-            Chest l = (Chest) dc.getLeftSide();
+		if (ih instanceof DoubleChest) {
+			DoubleChest dc = (DoubleChest) ih;
+			Chest r = (Chest) dc.getRightSide();
+			Chest l = (Chest) dc.getLeftSide();
 
-            shopLocation.remove(r.getLocation());
-            shopLocation.remove(l.getLocation());
-        } else {
-            shopLocation.remove(shop.getLocation());
-        }
+			shopLocation.remove(r.getLocation());
+			shopLocation.remove(l.getLocation());
+		} else {
+			shopLocation.remove(shop.getLocation());
+		}
 
-        shop.removeItem();
-        shop.removeHologram();
+		shop.removeItem();
+		shop.removeHologram();
 
-        if (removeFromDatabase)
-            plugin.getShopDatabase().removeShop(shop);
-    }
+		if (removeFromDatabase)
+			plugin.getShopDatabase().removeShop(shop);
+	}
 
-    /**
-     * Get the shop limits of a player
-     * @param p Player, whose shop limits should be returned
-     * @return The shop limits of the given player
-     */
-    public int getShopLimit(Player p) {
-        int limit = 0;
-        boolean useDefault = true;
+	/**
+	 * Get the shop limits of a player
+	 * 
+	 * @param p
+	 *            Player, whose shop limits should be returned
+	 * @return The shop limits of the given player
+	 */
+	public int getShopLimit(Player p) {
+		int limit = 0;
+		boolean useDefault = true;
 
-        for (PermissionAttachmentInfo permInfo : p.getEffectivePermissions()) {
-            if (permInfo.getPermission().startsWith("shopchest.limit.") && p.hasPermission(permInfo.getPermission())) {
-                if (permInfo.getPermission().equalsIgnoreCase(Permissions.NO_LIMIT)) {
-                    limit = -1;
-                    useDefault = false;
-                    break;
-                } else {
-                    String[] spl = permInfo.getPermission().split("shopchest.limit.");
+		for (PermissionAttachmentInfo permInfo : p.getEffectivePermissions()) {
+			if (permInfo.getPermission().startsWith("shopchest.limit.") && p.hasPermission(permInfo.getPermission())) {
+				if (permInfo.getPermission().equalsIgnoreCase(Permissions.NO_LIMIT)) {
+					limit = -1;
+					useDefault = false;
+					break;
+				} else {
+					String[] spl = permInfo.getPermission().split("shopchest.limit.");
 
-                    if (spl.length > 1) {
-                        try {
-                            int newLimit = Integer.valueOf(spl[1]);
+					if (spl.length > 1) {
+						try {
+							int newLimit = Integer.valueOf(spl[1]);
 
-                            if (newLimit < 0) {
-                                limit = -1;
-                                break;
-                            }
+							if (newLimit < 0) {
+								limit = -1;
+								break;
+							}
 
-                            limit = Math.max(limit, newLimit);
-                            useDefault = false;
-                        } catch (NumberFormatException ignored) {
-                            /* Ignore and continue */
-                        }
-                    }
-                }
-            }
-        }
+							limit = Math.max(limit, newLimit);
+							useDefault = false;
+						} catch (NumberFormatException ignored) {
+							/* Ignore and continue */
+						}
+					}
+				}
+			}
+		}
 
-        if (limit < -1) limit = -1;
-        return (useDefault ? plugin.getShopChestConfig().default_limit : limit);
-    }
+		if (limit < -1)
+			limit = -1;
+		return (useDefault ? plugin.getShopChestConfig().default_limit : limit);
+	}
 
-    /**
-     * Get the amount of shops of a player
-     * @param p Player, whose shops should be counted
-     * @return The amount of a shops a player has (if {@link Config#exclude_admin_shops} is true, admin shops won't be counted)
-     */
-    public int getShopAmount(OfflinePlayer p) {
-        float shopCount = 0;
+	/**
+	 * Get the amount of shops of a player
+	 * 
+	 * @param p
+	 *            Player, whose shops should be counted
+	 * @return The amount of a shops a player has (if
+	 *         {@link Config#exclude_admin_shops} is true, admin shops won't be
+	 *         counted)
+	 */
+	public int getShopAmount(OfflinePlayer p) {
+		float shopCount = 0;
 
-        for (Shop shop : getShops()) {
-            if (shop.getVendor().equals(p)) {
-                if (shop.getShopType() != Shop.ShopType.ADMIN || !plugin.getShopChestConfig().exclude_admin_shops) {
-                    shopCount++;
+		for (Shop shop : getShops()) {
+			if (shop.getVendor().equals(p)) {
+				if (shop.getShopType() != Shop.ShopType.ADMIN || !plugin.getShopChestConfig().exclude_admin_shops) {
+					shopCount++;
 
-                    InventoryHolder ih = shop.getInventoryHolder();
+					InventoryHolder ih = shop.getInventoryHolder();
 
-                    if (ih instanceof DoubleChest)
-                        shopCount -= 0.5;
-                }
-            }
-        }
+					if (ih instanceof DoubleChest)
+						shopCount -= 0.5;
+				}
+			}
+		}
 
-        return Math.round(shopCount);
-    }
+		return Math.round(shopCount);
+	}
 
-    /**
-     * Reload the shops
-     * @param reloadConfig Whether the configuration should also be reloaded
-     * @param showConsoleMessages Whether messages about the language file should be shown in the console
-     * @return Amount of shops, which were reloaded
-     */
-    public int reloadShops(boolean reloadConfig, boolean showConsoleMessages) {
-        plugin.debug("Reloading shops...");
+	/**
+	 * Reload the shops
+	 * 
+	 * @param reloadConfig
+	 *            Whether the configuration should also be reloaded
+	 * @param showConsoleMessages
+	 *            Whether messages about the language file should be shown in
+	 *            the console
+	 * @return Amount of shops, which were reloaded
+	 */
+	public int reloadShops(boolean reloadConfig, boolean showConsoleMessages) {
+		plugin.debug("Reloading shops...");
 
-        plugin.getShopDatabase().connect();
+		plugin.getShopDatabase().connect();
 
-        if (reloadConfig) {
-            plugin.getShopChestConfig().reload(false, true, showConsoleMessages);
-            plugin.getUpdater().setMaxDelta(plugin.getShopChestConfig().update_quality.getTime());
-        }
+		if (reloadConfig) {
+			plugin.getShopChestConfig().reload(false, true, showConsoleMessages);
+			plugin.getUpdater().setMaxDelta(plugin.getShopChestConfig().update_quality.getTime());
+		}
 
-        for (Shop shop : getShops()) {
-            removeShop(shop, false);
-            plugin.debug("Removed shop (#" + shop.getID() + ")");
-        }
+		for (Shop shop : getShops()) {
+			removeShop(shop, false);
+			plugin.debug("Removed shop (#" + shop.getID() + ")");
+		}
 
-        int highestId = plugin.getShopDatabase().getHighestID();
+		int highestId = plugin.getShopDatabase().getHighestID();
 
-        int count = 0;
-        for (int id = 1; id <= highestId; id++) {
+		int count = 0;
+		for (int id = 1; id <= highestId; id++) {
 
-            try {
-                plugin.debug("Trying to add shop. (#" + id + ")");
-                Shop shop = plugin.getShopDatabase().getShop(id);
-                addShop(shop, false);
-            } catch (Exception e) {
-                plugin.debug("Error while adding shop (#" + id + "):");
-                plugin.debug(e);
-                continue;
-            }
+			try {
+				plugin.debug("Trying to add shop. (#" + id + ")");
+				Shop shop = plugin.getShopDatabase().getShop(id);
+				addShop(shop, false);
+			} catch (Exception e) {
+				plugin.debug("Error while adding shop (#" + id + "):");
+				plugin.debug(e);
+				continue;
+			}
 
-            count++;
-        }
+			count++;
+		}
 
-        return count;
-    }
+		return count;
+	}
 
-    /**
-     * Update hologram and item of all shops for a player
-     * @param player Player to show the updates
-     * @param location Location of the player
-     */
-    public void updateShops(Player player, Location location) {
-        for (Shop shop : getShops()) {
-            updateShop(shop, player, location);
-        }
-    }
+	/**
+	 * Update hologram and item of all shops for a player
+	 * 
+	 * @param player
+	 *            Player to show the updates
+	 * @param location
+	 *            Location of the player
+	 */
+	public void updateShops(Player player, Location location) {
+		for (Shop shop : getShops()) {
+			updateShop(shop, player, location);
+		}
+	}
 
-    /**
-     * Update hologram and item of the shop for a player
-     * @param shop Shop to update
-     * @param player Player to show the update
-     * @param location Location of the player
-     */
-    public void updateShop(Shop shop, Player player, Location location) {
-        double holoDistSqr = Math.pow(plugin.getShopChestConfig().maximal_distance, 2);
-        double itemDistSqr = Math.pow(plugin.getShopChestConfig().maximal_item_distance, 2);
+	/**
+	 * Update hologram and item of the shop for a player
+	 * 
+	 * @param shop
+	 *            Shop to update
+	 * @param player
+	 *            Player to show the update
+	 * @param location
+	 *            Location of the player
+	 */
+	public void updateShop(Shop shop, Player player, Location location) {
+		double holoDistSqr = Math.pow(plugin.getShopChestConfig().maximal_distance, 2);
+		double itemDistSqr = Math.pow(plugin.getShopChestConfig().maximal_item_distance, 2);
 
-        if (location.getWorld().getName().equals(shop.getLocation().getWorld().getName())) {
-            double distSqr = shop.getLocation().distanceSquared(location);
+		if (location.getWorld().getName().equals(shop.getLocation().getWorld().getName())) {
+			double distSqr = shop.getLocation().distanceSquared(location);
 
-            if (distSqr <= holoDistSqr) {
-                if (shop.getHologram() != null) {
-                    Block b = shop.getLocation().getBlock();
+			if (distSqr <= holoDistSqr) {
+				if (shop.getHologram() != null) {
+					Block b = shop.getLocation().getBlock();
 
-                    if (b.getType() != Material.CHEST && b.getType() != Material.TRAPPED_CHEST) {
-                        plugin.getShopUtils().removeShop(shop, plugin.getShopChestConfig().remove_shop_on_error);
-                        return;
-                    }
+					if (b.getType() != Material.CHEST && b.getType() != Material.TRAPPED_CHEST) {
+						plugin.getShopUtils().removeShop(shop, plugin.getShopChestConfig().remove_shop_on_error);
+						return;
+					}
 
-                    if (!shop.getHologram().isVisible(player)) {
-                        shop.getHologram().showPlayer(player);
-                    }
-                }
-            } else {
-                if (shop.getHologram() != null) shop.getHologram().hidePlayer(player);
-            }
+					if (!shop.getHologram().isVisible(player)) {
+						shop.getHologram().showPlayer(player);
+					}
+				}
+			} else {
+				if (shop.getHologram() != null)
+					shop.getHologram().hidePlayer(player);
+			}
 
-            if (distSqr <= itemDistSqr) {
-                if (shop.getItem() != null) {
-                    shop.getItem().setVisible(player, true);
-                }
-            } else {
-                if (shop.getItem() != null) shop.getItem().setVisible(player, false);
-            }
-        }
-    }
+			if (distSqr <= itemDistSqr) {
+				if (shop.getItem() != null) {
+					shop.getItem().setVisible(player, true);
+				}
+			} else {
+				if (shop.getItem() != null)
+					shop.getItem().setVisible(player, false);
+			}
+		}
+	}
 }

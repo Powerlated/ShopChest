@@ -8,48 +8,48 @@ import de.epiceric.shopchest.event.ShopUpdateEvent;
 
 public class ShopUpdater extends Thread {
 
-    private ShopChest plugin;
+	private ShopChest plugin;
 
-    private boolean running;
-    private long maxDelta;
-    private long lastTime;
+	private boolean running;
+	private long maxDelta;
+	private long lastTime;
 
-    public ShopUpdater(ShopChest plugin) {
-        this.plugin = plugin;
-        setMaxDelta(plugin.getShopChestConfig().update_quality.getTime());
-    }
+	public ShopUpdater(ShopChest plugin) {
+		this.plugin = plugin;
+		setMaxDelta(plugin.getShopChestConfig().update_quality.getTime());
+	}
 
-    public synchronized void setMaxDelta(long maxDelta) {
-        this.maxDelta = maxDelta * 50;
-    }
+	public synchronized void setMaxDelta(long maxDelta) {
+		this.maxDelta = maxDelta * 50;
+	}
 
-    @Override
-    public synchronized void start() {
-        super.start();
-        running = true;
-        lastTime = System.currentTimeMillis();
-    }
+	@Override
+	public synchronized void start() {
+		super.start();
+		running = true;
+		lastTime = System.currentTimeMillis();
+	}
 
-    public synchronized void cancel() {
-        running = false;
-        super.interrupt();
-    }
+	public synchronized void cancel() {
+		running = false;
+		super.interrupt();
+	}
 
-    @Override
-    public void run() {
-        while(running) {
-            long timeNow = System.currentTimeMillis();
-            long timeElapsed = timeNow - lastTime;
+	@Override
+	public void run() {
+		while (running) {
+			long timeNow = System.currentTimeMillis();
+			long timeElapsed = timeNow - lastTime;
 
-            if (timeElapsed >= maxDelta) {
-                new BukkitRunnable() {
-                    @Override
-                    public void run() {
-                        Bukkit.getPluginManager().callEvent(new ShopUpdateEvent());
-                    }
-                }.runTask(plugin);
-                lastTime = timeNow;
-            }
-        }
-    }
+			if (timeElapsed >= maxDelta) {
+				new BukkitRunnable() {
+					@Override
+					public void run() {
+						Bukkit.getPluginManager().callEvent(new ShopUpdateEvent());
+					}
+				}.runTask(plugin);
+				lastTime = timeNow;
+			}
+		}
+	}
 }

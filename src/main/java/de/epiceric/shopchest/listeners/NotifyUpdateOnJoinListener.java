@@ -14,23 +14,27 @@ import de.epiceric.shopchest.utils.Permissions;
 
 public class NotifyUpdateOnJoinListener implements Listener {
 
-    private ShopChest plugin;
+	private ShopChest plugin;
 
-    public NotifyUpdateOnJoinListener(ShopChest plugin) {
-        this.plugin = plugin;
-    }
+	public NotifyUpdateOnJoinListener(ShopChest plugin) {
+		this.plugin = plugin;
+	}
 
-    @EventHandler
-    public void onPlayerJoin(PlayerJoinEvent e) {
-        Player p = e.getPlayer();
+	@EventHandler
+	public void onPlayerJoin(PlayerJoinEvent e) {
+		Player p = e.getPlayer();
 
-        if (plugin.isUpdateNeeded()) {
-            if (p.hasPermission(Permissions.UPDATE_NOTIFICATION)) {
-                JsonBuilder jb = new JsonBuilder(plugin, LanguageUtils.getMessage(LocalizedMessage.Message.UPDATE_AVAILABLE, new LocalizedMessage.ReplacedRegex(Regex.VERSION, plugin.getLatestVersion())), LanguageUtils.getMessage(LocalizedMessage.Message.UPDATE_CLICK_TO_DOWNLOAD), plugin.getDownloadLink());
-                jb.sendJson(p);
-            }
-        }
+		if (plugin.isUpdateNeeded()) {
+			if (p.hasPermission(Permissions.UPDATE_NOTIFICATION)) {
+				JsonBuilder jb = new JsonBuilder(plugin,
+						LanguageUtils.getMessage(LocalizedMessage.Message.UPDATE_AVAILABLE,
+								new LocalizedMessage.ReplacedRegex(Regex.VERSION, plugin.getLatestVersion())),
+						LanguageUtils.getMessage(LocalizedMessage.Message.UPDATE_CLICK_TO_DOWNLOAD),
+						plugin.getDownloadLink());
+				jb.sendJson(p);
+			}
+		}
 
-    }
+	}
 
 }

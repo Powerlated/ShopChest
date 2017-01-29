@@ -12,22 +12,23 @@ import de.epiceric.shopchest.ShopChest;
 
 public class BlockExplodeListener implements Listener {
 
-    private ShopChest plugin;
+	private ShopChest plugin;
 
-    public BlockExplodeListener(ShopChest plugin) {
-        this.plugin = plugin;
-    }
+	public BlockExplodeListener(ShopChest plugin) {
+		this.plugin = plugin;
+	}
 
-    @EventHandler
-    public void onBlockExplode(BlockExplodeEvent e) {
-        if (plugin.getShopChestConfig().explosion_protection) {
-            ArrayList<Block> bl = new ArrayList<>(e.blockList());
-            for (Block b : bl) {
-                if (b.getType().equals(Material.CHEST) || b.getType().equals(Material.TRAPPED_CHEST)) {
-                    if (plugin.getShopUtils().isShop(b.getLocation())) e.blockList().remove(b);
-                }
-            }
-        }
-    }
+	@EventHandler
+	public void onBlockExplode(BlockExplodeEvent e) {
+		if (plugin.getShopChestConfig().explosion_protection) {
+			ArrayList<Block> bl = new ArrayList<>(e.blockList());
+			for (Block b : bl) {
+				if (b.getType().equals(Material.CHEST) || b.getType().equals(Material.TRAPPED_CHEST)) {
+					if (plugin.getShopUtils().isShop(b.getLocation()))
+						e.blockList().remove(b);
+				}
+			}
+		}
+	}
 
 }

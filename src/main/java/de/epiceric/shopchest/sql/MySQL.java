@@ -9,42 +9,46 @@ import de.epiceric.shopchest.ShopChest;
 
 public class MySQL extends Database {
 
-    public MySQL(ShopChest plugin) {
-        super(plugin);
-    }
+	public MySQL(ShopChest plugin) {
+		super(plugin);
+	}
 
-    @Override
-    public Connection getConnection() {
-        try {
-            if (connection != null && !connection.isClosed()) {
-                return connection;
-            }
+	@Override
+	public Connection getConnection() {
+		try {
+			if (connection != null && !connection.isClosed()) {
+				return connection;
+			}
 
-            Class.forName("com.mysql.jdbc.Driver");
+			Class.forName("com.mysql.jdbc.Driver");
 
-            String connectUrl = "jdbc:mysql://" + plugin.getShopChestConfig().database_mysql_host + ":" + plugin.getShopChestConfig().database_mysql_port + "/" + plugin.getShopChestConfig().database_mysql_database + "?autoReconnect=true";
-            plugin.debug("Connecting to MySQL Server \"" + connectUrl + "\" as user \"" + plugin.getShopChestConfig().database_mysql_username + "\"");
+			String connectUrl = "jdbc:mysql://" + plugin.getShopChestConfig().database_mysql_host + ":"
+					+ plugin.getShopChestConfig().database_mysql_port + "/"
+					+ plugin.getShopChestConfig().database_mysql_database + "?autoReconnect=true";
+			plugin.debug("Connecting to MySQL Server \"" + connectUrl + "\" as user \""
+					+ plugin.getShopChestConfig().database_mysql_username + "\"");
 
-            connection = DriverManager.getConnection(connectUrl, plugin.getShopChestConfig().database_mysql_username, plugin.getShopChestConfig().database_mysql_password);
+			connection = DriverManager.getConnection(connectUrl, plugin.getShopChestConfig().database_mysql_username,
+					plugin.getShopChestConfig().database_mysql_password);
 
-            return connection;
-        } catch (Exception ex) {
-            plugin.getLogger().severe("Failed to get database connection");
-            plugin.debug("Failed to get database connection");
-            plugin.debug(ex);
-        }
+			return connection;
+		} catch (Exception ex) {
+			plugin.getLogger().severe("Failed to get database connection");
+			plugin.debug("Failed to get database connection");
+			plugin.debug(ex);
+		}
 
-        return null;
-    }
+		return null;
+	}
 
-    public void ping() {
-        try (PreparedStatement ps = connection.prepareStatement("/* ping */ SELECT 1")) {
-            plugin.debug("Pinging to MySQL server...");
-            ps.executeQuery();
-        } catch (SQLException ex) {
-            plugin.getLogger().severe("Failed to ping to MySQL server. Trying to reconnect...");
-            plugin.debug("Failed to ping to MySQL server. Trying to reconnect...");
-            connect();
-        }
-    }
+	public void ping() {
+		try (PreparedStatement ps = connection.prepareStatement("/* ping */ SELECT 1")) {
+			plugin.debug("Pinging to MySQL server...");
+			ps.executeQuery();
+		} catch (SQLException ex) {
+			plugin.getLogger().severe("Failed to ping to MySQL server. Trying to reconnect...");
+			plugin.debug("Failed to ping to MySQL server. Trying to reconnect...");
+			connect();
+		}
+	}
 }

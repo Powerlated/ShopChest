@@ -8,21 +8,21 @@ import de.epiceric.shopchest.shop.Shop;
 
 public abstract class ShopEvent extends Event {
 
-    private static final HandlerList handlers = new HandlerList();
+	protected static final HandlerList handlers = new HandlerList();
 
-    /**
-     * @return Shop which is involved in this event
-     */
-    public abstract Shop getShop();
+	/**
+	 * @return Shop which is involved in this event
+	 */
+	public abstract Shop getShop();
 
-    /**
-     * @return Player who is involved in this event
-     */
-    public abstract Player getPlayer();
+	/**
+	 * @return Player who is involved in this event
+	 */
+	public abstract Player getPlayer();
 
-    @Override
-    public HandlerList getHandlers() {
-        return handlers;
-    }
+	@Override
+	public HandlerList getHandlers() {
+		return handlers;
+	}
 
 }

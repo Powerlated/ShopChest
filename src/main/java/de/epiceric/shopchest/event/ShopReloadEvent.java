@@ -9,34 +9,35 @@ import org.bukkit.event.HandlerList;
  * Called when a player reloads the shops
  */
 public class ShopReloadEvent extends Event implements Cancellable {
-    private static final HandlerList handlers = new HandlerList();
+	private static final HandlerList handlers = new HandlerList();
 
-    private CommandSender sender;
-    private boolean cancelled;
+	private CommandSender sender;
+	private boolean cancelled;
 
-    public ShopReloadEvent(CommandSender sender) {
-        this.sender = sender;
-    }
+	public ShopReloadEvent(CommandSender sender) {
+		this.sender = sender;
+	}
 
-    /**
-     * @return Sender, who caused the reload ({@link org.bukkit.entity.Player} or {@link org.bukkit.command.ConsoleCommandSender})
-     */
-    public CommandSender getSender() {
-        return sender;
-    }
+	/**
+	 * @return Sender, who caused the reload ({@link org.bukkit.entity.Player}
+	 *         or {@link org.bukkit.command.ConsoleCommandSender})
+	 */
+	public CommandSender getSender() {
+		return sender;
+	}
 
-    @Override
-    public HandlerList getHandlers() {
-        return handlers;
-    }
+	@Override
+	public HandlerList getHandlers() {
+		return handlers;
+	}
 
-    @Override
-    public boolean isCancelled() {
-        return cancelled;
-    }
+	@Override
+	public boolean isCancelled() {
+		return cancelled;
+	}
 
-    @Override
-    public void setCancelled(boolean cancel) {
-        cancelled = cancel;
-    }
+	@Override
+	public void setCancelled(boolean cancel) {
+		cancelled = cancel;
+	}
 }

@@ -34,137 +34,142 @@ import de.epiceric.shopchest.worldguard.ShopFlag;
 
 public class WorldGuardListener implements Listener {
 
-    private ShopChest plugin;
-    private WorldGuardPlugin worldGuard;
+	private ShopChest plugin;
+	private WorldGuardPlugin worldGuard;
 
-    public WorldGuardListener(ShopChest plugin) {
-        this.plugin = plugin;
-        this.worldGuard = plugin.getWorldGuard();
-    }
+	public WorldGuardListener(ShopChest plugin) {
+		this.plugin = plugin;
+		this.worldGuard = plugin.getWorldGuard();
+	}
 
+	private boolean isAllowed(Player player, Location location, Action action) {
+		LocalPlayer localPlayer = worldGuard.wrapPlayer(player);
+		RegionContainer container = worldGuard.getRegionContainer();
+		RegionQuery query = container.createQuery();
+		Shop shop = plugin.getShopUtils().getShop(location);
 
-    private boolean isAllowed(Player player, Location location, Action action) {
-        LocalPlayer localPlayer = worldGuard.wrapPlayer(player);
-        RegionContainer container = worldGuard.getRegionContainer();
-        RegionQuery query = container.createQuery();
-        Shop shop = plugin.getShopUtils().getShop(location);
+		if (action == Action.RIGHT_CLICK_BLOCK && shop != null) {
+			if (shop.getVendor().getUniqueId().equals(player.getUniqueId())
+					&& shop.getShopType() != Shop.ShopType.ADMIN) {
+				return true;
+			}
 
-        if (action == Action.RIGHT_CLICK_BLOCK && shop != null) {
-            if (shop.getVendor().getUniqueId().equals(player.getUniqueId()) && shop.getShopType() != Shop.ShopType.ADMIN) {
-                return true;
-            }
+			if (!shop.getVendor().getUniqueId().equals(player.getUniqueId()) && player.isSneaking()) {
+				return player.hasPermission(Permissions.OPEN_OTHER);
+			}
+		}
 
-            if (!shop.getVendor().getUniqueId().equals(player.getUniqueId()) && player.isSneaking()) {
-                return player.hasPermission(Permissions.OPEN_OTHER);
-            }
-        }
+		if (ClickType.getPlayerClickType(player) != null) {
+			switch (ClickType.getPlayerClickType(player).getClickType()) {
+			case CREATE:
+				return query.testState(location, localPlayer, ShopFlag.CREATE_SHOP);
+			case REMOVE:
+			case INFO:
+				return true;
+			}
+		} else {
+			if (shop != null) {
+				StateFlag flag = (shop.getShopType() == Shop.ShopType.NORMAL ? ShopFlag.USE_SHOP
+						: ShopFlag.USE_ADMIN_SHOP);
 
-        if (ClickType.getPlayerClickType(player) != null) {
-            switch (ClickType.getPlayerClickType(player).getClickType()) {
-                case CREATE:
-                    return query.testState(location, localPlayer, ShopFlag.CREATE_SHOP);
-                case REMOVE:
-                case INFO:
-                    return true;
-            }
-        } else {
-            if (shop != null) {
-                StateFlag flag = (shop.getShopType() == Shop.ShopType.NORMAL ? ShopFlag.USE_SHOP : ShopFlag.USE_ADMIN_SHOP);
+				return query.testState(location, localPlayer, flag);
+			}
+		}
 
-                return query.testState(location, localPlayer, flag);
-            }
-        }
+		return false;
+	}
 
-        return false;
-    }
+	@EventHandler(priority = EventPriority.LOW)
+	public void onUseEntity(UseEntityEvent event) {
+		if (plugin.getShopChestConfig().enable_worldguard_integration) {
+			Player player = event.getCause().getFirstPlayer();
+			if (player == null)
+				return;
 
-    @EventHandler(priority = EventPriority.LOW)
-    public void onUseEntity(UseEntityEvent event) {
-        if (plugin.getShopChestConfig().enable_worldguard_integration) {
-            Player player = event.getCause().getFirstPlayer();
-            if (player == null) return;
+			if (event.getOriginalEvent() instanceof PlayerInteractAtEntityEvent) {
+				PlayerInteractAtEntityEvent orig = (PlayerInteractAtEntityEvent) event.getOriginalEvent();
+				Entity e = orig.getRightClicked();
 
-            if (event.getOriginalEvent() instanceof PlayerInteractAtEntityEvent) {
-                PlayerInteractAtEntityEvent orig = (PlayerInteractAtEntityEvent) event.getOriginalEvent();
-                Entity e = orig.getRightClicked();
+				if (e.getType() == EntityType.ARMOR_STAND) {
+					if (!Hologram.isPartOfHologram((ArmorStand) e))
+						return;
 
-                if (e.getType() == EntityType.ARMOR_STAND) {
-                    if (!Hologram.isPartOfHologram((ArmorStand) e))
-                        return;
+					for (Shop shop : plugin.getShopUtils().getShops()) {
+						if (shop.getHologram().contains((ArmorStand) e)) {
+							if (isAllowed(player, shop.getLocation(), Action.RIGHT_CLICK_BLOCK)) {
+								event.setAllowed(true);
+								orig.setCancelled(false);
+							}
 
-                    for (Shop shop : plugin.getShopUtils().getShops()) {
-                        if (shop.getHologram().contains((ArmorStand) e)) {
-                            if (isAllowed(player, shop.getLocation(), Action.RIGHT_CLICK_BLOCK)) {
-                                event.setAllowed(true);
-                                orig.setCancelled(false);
-                            }
+							return;
+						}
+					}
+				}
+			}
+		}
+	}
 
-                            return;
-                        }
-                    }
-                }
-            }
-        }
-    }
+	@EventHandler(priority = EventPriority.LOW)
+	public void onDamageEntity(DamageEntityEvent event) {
+		if (plugin.getShopChestConfig().enable_worldguard_integration) {
+			Player player = event.getCause().getFirstPlayer();
+			if (player == null)
+				return;
 
-    @EventHandler(priority = EventPriority.LOW)
-    public void onDamageEntity(DamageEntityEvent event) {
-        if (plugin.getShopChestConfig().enable_worldguard_integration) {
-            Player player = event.getCause().getFirstPlayer();
-            if (player == null) return;
+			if (event.getOriginalEvent() instanceof EntityDamageByEntityEvent) {
+				EntityDamageByEntityEvent orig = (EntityDamageByEntityEvent) event.getOriginalEvent();
+				Entity e = orig.getEntity();
 
-            if (event.getOriginalEvent() instanceof EntityDamageByEntityEvent) {
-                EntityDamageByEntityEvent orig = (EntityDamageByEntityEvent) event.getOriginalEvent();
-                Entity e = orig.getEntity();
+				if (e.getType() == EntityType.ARMOR_STAND) {
+					if (!Hologram.isPartOfHologram((ArmorStand) e))
+						return;
 
-                if (e.getType() == EntityType.ARMOR_STAND) {
-                    if (!Hologram.isPartOfHologram((ArmorStand) e))
-                        return;
+					for (Shop shop : plugin.getShopUtils().getShops()) {
+						if (shop.getHologram().contains((ArmorStand) e)) {
+							if (isAllowed(player, shop.getLocation(), Action.LEFT_CLICK_BLOCK)) {
+								event.setAllowed(true);
+								orig.setCancelled(false);
+							}
 
-                    for (Shop shop : plugin.getShopUtils().getShops()) {
-                        if (shop.getHologram().contains((ArmorStand) e)) {
-                            if (isAllowed(player, shop.getLocation(), Action.LEFT_CLICK_BLOCK)) {
-                                event.setAllowed(true);
-                                orig.setCancelled(false);
-                            }
+							return;
+						}
+					}
+				}
+			}
+		}
+	}
 
-                            return;
-                        }
-                    }
-                }
-            }
-        }
-    }
+	@EventHandler(priority = EventPriority.LOW)
+	public void onUseBlock(UseBlockEvent event) {
+		if (plugin.getShopChestConfig().enable_worldguard_integration) {
+			Player player = event.getCause().getFirstPlayer();
+			if (player == null)
+				return;
 
-    @EventHandler(priority = EventPriority.LOW)
-    public void onUseBlock(UseBlockEvent event) {
-        if (plugin.getShopChestConfig().enable_worldguard_integration) {
-            Player player = event.getCause().getFirstPlayer();
-            if (player == null) return;
+			if (event.getOriginalEvent() instanceof PlayerInteractEvent) {
+				PlayerInteractEvent orig = (PlayerInteractEvent) event.getOriginalEvent();
 
-            if (event.getOriginalEvent() instanceof PlayerInteractEvent) {
-                PlayerInteractEvent orig = (PlayerInteractEvent) event.getOriginalEvent();
+				if (orig.hasBlock()) {
+					Material type = orig.getClickedBlock().getType();
+					if (type == Material.CHEST || type == Material.TRAPPED_CHEST) {
+						if (isAllowed(player, orig.getClickedBlock().getLocation(), orig.getAction())) {
+							event.setAllowed(true);
+							orig.setCancelled(false);
+						}
+					}
+				}
+			} else if (event.getOriginalEvent() instanceof InventoryOpenEvent) {
+				InventoryOpenEvent orig = (InventoryOpenEvent) event.getOriginalEvent();
 
-                if (orig.hasBlock()) {
-                    Material type = orig.getClickedBlock().getType();
-                    if (type == Material.CHEST || type == Material.TRAPPED_CHEST) {
-                        if (isAllowed(player, orig.getClickedBlock().getLocation(), orig.getAction())) {
-                            event.setAllowed(true);
-                            orig.setCancelled(false);
-                        }
-                    }
-                }
-            } else if (event.getOriginalEvent() instanceof InventoryOpenEvent) {
-                InventoryOpenEvent orig = (InventoryOpenEvent) event.getOriginalEvent();
-
-                if (orig.getInventory().getHolder() instanceof Chest) {
-                    if (isAllowed(player, ((Chest)orig.getInventory().getHolder()).getLocation(), Action.RIGHT_CLICK_BLOCK)) {
-                        event.setAllowed(true);
-                        orig.setCancelled(false);
-                    }
-                }
-            }
-        }
-    }
+				if (orig.getInventory().getHolder() instanceof Chest) {
+					if (isAllowed(player, ((Chest) orig.getInventory().getHolder()).getLocation(),
+							Action.RIGHT_CLICK_BLOCK)) {
+						event.setAllowed(true);
+						orig.setCancelled(false);
+					}
+				}
+			}
+		}
+	}
 
 }

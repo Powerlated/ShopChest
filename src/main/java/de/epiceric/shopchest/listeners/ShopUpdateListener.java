@@ -13,25 +13,25 @@ import de.epiceric.shopchest.shop.Shop;
 
 public class ShopUpdateListener implements Listener {
 
-    private ShopChest plugin;
+	private ShopChest plugin;
 
-    public ShopUpdateListener(ShopChest plugin) {
-        this.plugin = plugin;
-    }
+	public ShopUpdateListener(ShopChest plugin) {
+		this.plugin = plugin;
+	}
 
-    @EventHandler
-    public void onShopUpdate(ShopUpdateEvent e) {
-        for (Player p : Bukkit.getOnlinePlayers()) {
-            plugin.getShopUtils().updateShops(p, p.getLocation());
-        }
-    }
+	@EventHandler
+	public void onShopUpdate(ShopUpdateEvent e) {
+		for (Player p : Bukkit.getOnlinePlayers()) {
+			plugin.getShopUtils().updateShops(p, p.getLocation());
+		}
+	}
 
-    @EventHandler(priority = EventPriority.MONITOR)
-    public void onPlayerJoin(PlayerJoinEvent e) {
-        for (Shop shop : plugin.getShopUtils().getShops()) {
-            shop.getHologram().hidePlayer(e.getPlayer());
-            shop.getItem().setVisible(e.getPlayer(), false);
-        }
-    }
+	@EventHandler(priority = EventPriority.MONITOR)
+	public void onPlayerJoin(PlayerJoinEvent e) {
+		for (Shop shop : plugin.getShopUtils().getShops()) {
+			shop.getHologram().hidePlayer(e.getPlayer());
+			shop.getItem().setVisible(e.getPlayer(), false);
+		}
+	}
 
 }
