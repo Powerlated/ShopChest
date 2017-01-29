@@ -2,7 +2,6 @@ package de.epiceric.shopchest.event;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
-import org.bukkit.event.HandlerList;
 
 import de.epiceric.shopchest.shop.Shop;
 
@@ -70,10 +69,5 @@ public class ShopBuySellEvent extends ShopEvent implements Cancellable {
 
 	public enum Type {
 		BUY, SELL;
-	}
-
-	@Override
-	public HandlerList getHandlers() {
-		return handlers;
 	}
 }
