@@ -1,10 +1,11 @@
 package de.epiceric.shopchest.utils;
 
-import de.epiceric.shopchest.shop.Shop.ShopType;
+import java.util.HashMap;
+
 import org.bukkit.OfflinePlayer;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.HashMap;
+import de.epiceric.shopchest.shop.Shop.ShopType;
 
 public class ClickType {
 

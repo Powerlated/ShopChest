@@ -1,7 +1,12 @@
 package de.epiceric.shopchest.utils;
 
-import de.epiceric.shopchest.ShopChest;
-import de.epiceric.shopchest.nms.CustomBookMeta;
+import java.lang.reflect.InvocationTargetException;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.HashMap;
+
+import javax.xml.bind.DatatypeConverter;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.configuration.InvalidConfigurationException;
@@ -10,13 +15,11 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
-import org.bukkit.inventory.meta.*;
+import org.bukkit.inventory.meta.BookMeta;
+import org.bukkit.inventory.meta.ItemMeta;
 
-import javax.xml.bind.DatatypeConverter;
-import java.lang.reflect.InvocationTargetException;
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.HashMap;
+import de.epiceric.shopchest.ShopChest;
+import de.epiceric.shopchest.nms.CustomBookMeta;
 
 public class Utils {
 

@@ -1,9 +1,10 @@
 package de.epiceric.shopchest.utils;
 
-import de.epiceric.shopchest.ShopChest;
-import de.epiceric.shopchest.event.ShopUpdateEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitRunnable;
+
+import de.epiceric.shopchest.ShopChest;
+import de.epiceric.shopchest.event.ShopUpdateEvent;
 
 public class ShopUpdater extends Thread {
 

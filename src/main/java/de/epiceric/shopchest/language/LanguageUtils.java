@@ -1,10 +1,7 @@
 package de.epiceric.shopchest.language;
 
-import de.epiceric.shopchest.ShopChest;
-import de.epiceric.shopchest.config.LanguageConfiguration;
-import de.epiceric.shopchest.config.Regex;
-import de.epiceric.shopchest.nms.SpawnEggMeta;
-import de.epiceric.shopchest.utils.Utils;
+import java.util.ArrayList;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -17,7 +14,11 @@ import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.potion.Potion;
 import org.bukkit.potion.PotionType;
 
-import java.util.ArrayList;
+import de.epiceric.shopchest.ShopChest;
+import de.epiceric.shopchest.config.LanguageConfiguration;
+import de.epiceric.shopchest.config.Regex;
+import de.epiceric.shopchest.nms.SpawnEggMeta;
+import de.epiceric.shopchest.utils.Utils;
 
 public class LanguageUtils {
 

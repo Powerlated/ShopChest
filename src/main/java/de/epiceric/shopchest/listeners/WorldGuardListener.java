@@ -1,19 +1,5 @@
 package de.epiceric.shopchest.listeners;
 
-import com.sk89q.worldguard.LocalPlayer;
-import com.sk89q.worldguard.bukkit.RegionContainer;
-import com.sk89q.worldguard.bukkit.RegionQuery;
-import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
-import com.sk89q.worldguard.bukkit.event.block.UseBlockEvent;
-import com.sk89q.worldguard.bukkit.event.entity.DamageEntityEvent;
-import com.sk89q.worldguard.bukkit.event.entity.UseEntityEvent;
-import com.sk89q.worldguard.protection.flags.StateFlag;
-import de.epiceric.shopchest.ShopChest;
-import de.epiceric.shopchest.nms.Hologram;
-import de.epiceric.shopchest.shop.Shop;
-import de.epiceric.shopchest.utils.ClickType;
-import de.epiceric.shopchest.utils.Permissions;
-import de.epiceric.shopchest.worldguard.ShopFlag;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Chest;
@@ -29,6 +15,22 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+
+import com.sk89q.worldguard.LocalPlayer;
+import com.sk89q.worldguard.bukkit.RegionContainer;
+import com.sk89q.worldguard.bukkit.RegionQuery;
+import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
+import com.sk89q.worldguard.bukkit.event.block.UseBlockEvent;
+import com.sk89q.worldguard.bukkit.event.entity.DamageEntityEvent;
+import com.sk89q.worldguard.bukkit.event.entity.UseEntityEvent;
+import com.sk89q.worldguard.protection.flags.StateFlag;
+
+import de.epiceric.shopchest.ShopChest;
+import de.epiceric.shopchest.nms.Hologram;
+import de.epiceric.shopchest.shop.Shop;
+import de.epiceric.shopchest.utils.ClickType;
+import de.epiceric.shopchest.utils.Permissions;
+import de.epiceric.shopchest.worldguard.ShopFlag;
 
 public class WorldGuardListener implements Listener {
 

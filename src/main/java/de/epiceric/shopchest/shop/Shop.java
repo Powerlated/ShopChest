@@ -1,10 +1,5 @@
 package de.epiceric.shopchest.shop;
 
-import de.epiceric.shopchest.ShopChest;
-import de.epiceric.shopchest.config.Regex;
-import de.epiceric.shopchest.language.LanguageUtils;
-import de.epiceric.shopchest.language.LocalizedMessage;
-import de.epiceric.shopchest.nms.Hologram;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -16,6 +11,12 @@ import org.bukkit.block.DoubleChest;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
+
+import de.epiceric.shopchest.ShopChest;
+import de.epiceric.shopchest.config.Regex;
+import de.epiceric.shopchest.language.LanguageUtils;
+import de.epiceric.shopchest.language.LocalizedMessage;
+import de.epiceric.shopchest.nms.Hologram;
 
 public class Shop {
 

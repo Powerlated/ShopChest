@@ -1,9 +1,8 @@
 package de.epiceric.shopchest.utils;
 
-import de.epiceric.shopchest.ShopChest;
-import de.epiceric.shopchest.config.Config;
-import de.epiceric.shopchest.shop.Shop;
-import org.bukkit.Bukkit;
+import java.util.Collection;
+import java.util.HashMap;
+
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
@@ -14,8 +13,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.permissions.PermissionAttachmentInfo;
 
-import java.util.Collection;
-import java.util.HashMap;
+import de.epiceric.shopchest.ShopChest;
+import de.epiceric.shopchest.config.Config;
+import de.epiceric.shopchest.shop.Shop;
 
 public class ShopUtils {
 

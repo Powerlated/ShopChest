@@ -1,39 +1,53 @@
 package de.epiceric.shopchest;
 
-import com.palmergames.bukkit.towny.Towny;
-import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
-import de.epiceric.shopchest.config.Config;
-import de.epiceric.shopchest.config.Regex;
-import de.epiceric.shopchest.event.ShopReloadEvent;
-import de.epiceric.shopchest.event.ShopUpdateEvent;
-import de.epiceric.shopchest.language.LanguageUtils;
-import de.epiceric.shopchest.language.LocalizedMessage;
-import de.epiceric.shopchest.listeners.*;
-import de.epiceric.shopchest.nms.JsonBuilder;
-import de.epiceric.shopchest.shop.Shop;
-import de.epiceric.shopchest.shop.Shop.ShopType;
-import de.epiceric.shopchest.sql.Database;
-import de.epiceric.shopchest.sql.MySQL;
-import de.epiceric.shopchest.sql.SQLite;
-import de.epiceric.shopchest.utils.*;
-import de.epiceric.shopchest.utils.Metrics.Graph;
-import de.epiceric.shopchest.utils.Metrics.Plotter;
-import de.epiceric.shopchest.utils.UpdateChecker.UpdateCheckerResult;
-import de.epiceric.shopchest.worldguard.ShopFlag;
-import net.milkbowl.vault.economy.Economy;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.Reader;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.scheduler.BukkitTask;
 
-import java.io.*;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
+import com.palmergames.bukkit.towny.Towny;
+import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
+
+import de.epiceric.shopchest.config.Config;
+import de.epiceric.shopchest.config.Regex;
+import de.epiceric.shopchest.event.ShopReloadEvent;
+import de.epiceric.shopchest.language.LanguageUtils;
+import de.epiceric.shopchest.language.LocalizedMessage;
+import de.epiceric.shopchest.listeners.BlockExplodeListener;
+import de.epiceric.shopchest.listeners.ChestProtectListener;
+import de.epiceric.shopchest.listeners.NotifyUpdateOnJoinListener;
+import de.epiceric.shopchest.listeners.ShopInteractListener;
+import de.epiceric.shopchest.listeners.ShopItemListener;
+import de.epiceric.shopchest.listeners.ShopUpdateListener;
+import de.epiceric.shopchest.listeners.WorldGuardListener;
+import de.epiceric.shopchest.nms.JsonBuilder;
+import de.epiceric.shopchest.shop.Shop;
+import de.epiceric.shopchest.shop.Shop.ShopType;
+import de.epiceric.shopchest.sql.Database;
+import de.epiceric.shopchest.sql.MySQL;
+import de.epiceric.shopchest.sql.SQLite;
+import de.epiceric.shopchest.utils.Metrics;
+import de.epiceric.shopchest.utils.Metrics.Graph;
+import de.epiceric.shopchest.utils.Metrics.Plotter;
+import de.epiceric.shopchest.utils.Permissions;
+import de.epiceric.shopchest.utils.ShopUpdater;
+import de.epiceric.shopchest.utils.ShopUtils;
+import de.epiceric.shopchest.utils.UpdateChecker;
+import de.epiceric.shopchest.utils.UpdateChecker.UpdateCheckerResult;
+import de.epiceric.shopchest.utils.Utils;
+import de.epiceric.shopchest.worldguard.ShopFlag;
+import net.milkbowl.vault.economy.Economy;
 
 public class ShopChest extends JavaPlugin {
 

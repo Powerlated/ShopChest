@@ -1,11 +1,5 @@
 package de.epiceric.shopchest.config;
 
-import de.epiceric.shopchest.ShopChest;
-import de.epiceric.shopchest.event.ShopUpdateEvent;
-import de.epiceric.shopchest.language.LanguageUtils;
-import de.epiceric.shopchest.sql.Database;
-import org.bukkit.configuration.InvalidConfigurationException;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
@@ -14,6 +8,13 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import org.bukkit.configuration.InvalidConfigurationException;
+
+import de.epiceric.shopchest.ShopChest;
+import de.epiceric.shopchest.event.ShopUpdateEvent;
+import de.epiceric.shopchest.language.LanguageUtils;
+import de.epiceric.shopchest.sql.Database;
 
 public class Config {
 

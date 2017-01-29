@@ -1,12 +1,12 @@
 package de.epiceric.shopchest.sql;
 
-import de.epiceric.shopchest.ShopChest;
-
 import java.io.File;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+
+import de.epiceric.shopchest.ShopChest;
 
 public class SQLite extends Database {
 

@@ -1,13 +1,14 @@
 package de.epiceric.shopchest.worldguard;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
+
 import com.google.common.collect.Lists;
 import com.sk89q.worldguard.protection.flags.DefaultFlag;
 import com.sk89q.worldguard.protection.flags.Flag;
 import com.sk89q.worldguard.protection.flags.StateFlag;
-import de.epiceric.shopchest.ShopChest;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
+import de.epiceric.shopchest.ShopChest;
 
 public class ShopFlag {
 

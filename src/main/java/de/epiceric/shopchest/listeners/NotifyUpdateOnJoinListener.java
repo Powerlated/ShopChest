@@ -1,15 +1,16 @@
 package de.epiceric.shopchest.listeners;
 
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerJoinEvent;
+
 import de.epiceric.shopchest.ShopChest;
 import de.epiceric.shopchest.config.Regex;
 import de.epiceric.shopchest.language.LanguageUtils;
 import de.epiceric.shopchest.language.LocalizedMessage;
 import de.epiceric.shopchest.nms.JsonBuilder;
 import de.epiceric.shopchest.utils.Permissions;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerJoinEvent;
 
 public class NotifyUpdateOnJoinListener implements Listener {
 

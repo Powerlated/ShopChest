@@ -1,11 +1,11 @@
 package de.epiceric.shopchest.sql;
 
-import de.epiceric.shopchest.ShopChest;
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+
+import de.epiceric.shopchest.ShopChest;
 
 public class MySQL extends Database {
 

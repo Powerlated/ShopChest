@@ -1,18 +1,8 @@
 package de.epiceric.shopchest;
 
-import de.epiceric.shopchest.config.Regex;
-import de.epiceric.shopchest.event.ShopPreCreateEvent;
-import de.epiceric.shopchest.event.ShopPreInfoEvent;
-import de.epiceric.shopchest.event.ShopPreRemoveEvent;
-import de.epiceric.shopchest.event.ShopReloadEvent;
-import de.epiceric.shopchest.language.LanguageUtils;
-import de.epiceric.shopchest.language.LocalizedMessage;
-import de.epiceric.shopchest.nms.JsonBuilder;
-import de.epiceric.shopchest.shop.Shop;
-import de.epiceric.shopchest.shop.Shop.ShopType;
-import de.epiceric.shopchest.utils.*;
-import de.epiceric.shopchest.utils.ClickType.EnumClickType;
-import de.epiceric.shopchest.utils.UpdateChecker.UpdateCheckerResult;
+import java.util.List;
+import java.util.Locale;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -23,8 +13,23 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.List;
-import java.util.Locale;
+import de.epiceric.shopchest.config.Regex;
+import de.epiceric.shopchest.event.ShopPreCreateEvent;
+import de.epiceric.shopchest.event.ShopPreInfoEvent;
+import de.epiceric.shopchest.event.ShopPreRemoveEvent;
+import de.epiceric.shopchest.event.ShopReloadEvent;
+import de.epiceric.shopchest.language.LanguageUtils;
+import de.epiceric.shopchest.language.LocalizedMessage;
+import de.epiceric.shopchest.nms.JsonBuilder;
+import de.epiceric.shopchest.shop.Shop;
+import de.epiceric.shopchest.shop.Shop.ShopType;
+import de.epiceric.shopchest.utils.ClickType;
+import de.epiceric.shopchest.utils.ClickType.EnumClickType;
+import de.epiceric.shopchest.utils.Permissions;
+import de.epiceric.shopchest.utils.ShopUtils;
+import de.epiceric.shopchest.utils.UpdateChecker;
+import de.epiceric.shopchest.utils.UpdateChecker.UpdateCheckerResult;
+import de.epiceric.shopchest.utils.Utils;
 
 class ShopCommand extends BukkitCommand {
 

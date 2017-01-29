@@ -1,7 +1,8 @@
 package de.epiceric.shopchest.language;
 
-import de.epiceric.shopchest.config.Regex;
 import org.bukkit.ChatColor;
+
+import de.epiceric.shopchest.config.Regex;
 
 public class LocalizedMessage {
 
