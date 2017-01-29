@@ -1,10 +1,9 @@
 # Do not change anything in here unless you know what you're doing!
 
-name: ${project.name}
+name: ShopChest
 main: de.epiceric.shopchest.ShopChest
-version: ${project.version}
+version: 1.11.2
 author: EpicEric
-website: ${project.url}
 softdepend: [WorldGuard, Towny]
 depend: [Vault]
 

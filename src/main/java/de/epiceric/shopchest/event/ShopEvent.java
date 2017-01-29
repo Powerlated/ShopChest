@@ -25,4 +25,7 @@ public abstract class ShopEvent extends Event {
 		return handlers;
 	}
 
+	public static HandlerList getHandlerList() {
+		return handlers;
+	}
 }
